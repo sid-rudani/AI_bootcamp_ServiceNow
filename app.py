@@ -5,7 +5,7 @@ import requests
 # --- CONFIG ---
 st.set_page_config(page_title="AI Email Editor", page_icon="📧", layout="wide")
 
-emails = {"id": 1, "sender": "alice@example.com", "subject": "Meeting Follow-Up", "content": "Hi, just checking in on the meeting notes."}
+emails = [{"id": 1, "sender": "alice@example.com", "subject": "Meeting Follow-Up", "content": "Hi, just checking in on the meeting notes."}]
 
 # --- UI HEADER ---
 st.title("📧 AI Email Editing Tool")
@@ -16,11 +16,11 @@ if not emails:
     st.stop()
 
 # --- ID NAVIGATION BAR ---
-email_ids = emails.get('id')
-selected_id = st.sidebar.selectbox("📂 Select Email ID", options=email_ids, index=0)
+email_ids = [email["id"] for email in emails]
+selected_id = st.sidebar.selectbox("📂 Select Email ID", options=email_ids)
 
 # Find the selected email
-selected_email = emails
+selected_email = next((email for email in emails if email["id"] == selected_id), None)
 if not selected_email:
     st.error(f"No email found with ID {selected_id}.")
     st.stop()
