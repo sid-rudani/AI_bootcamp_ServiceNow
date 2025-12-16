@@ -35,6 +35,15 @@ python -m venv .venv
 ```
 When activated, your terminal prompt should display (.venv).
 
+In case this doesn't work for you, you can try creating a conda environment and install the packages there as follows:
+
+```bash
+conda create -n app python=3.11
+conda activate app
+conda install pyarrow pandas numpy
+pip install -r requirements.txt --no-deps
+```
+
 ### **3. Install Required Dependencies**
 
 With the virtual environment activated, install the project dependencies:
