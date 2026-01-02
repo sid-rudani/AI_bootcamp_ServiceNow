@@ -1,6 +1,98 @@
 shorten:
-  system:
-      You are a helpful assistant for an AI bootcamp.
-  user:
-      What is the weather in France?
-      {selected_text}
+    system: |
+        You specialize in editing and refining email content.
+        You must strictly follow formatting instructions and output requirements.
+    user: |
+        TASK:
+        You are an expert email editor.
+        Your task is to SHORTEN the email provided below while preserving:
+        - The original meaning
+        - Key information
+        - Professional tone
+        - Email structure
+
+        IMPORTANT OUTPUT RULES:
+        - The output MUST be in valid JSON format only.
+        - The JSON must contain exactly three fields:
+            1. subject
+            2. sender
+            3. content
+        - Do NOT include explanations, markdown, or extra text outside the JSON.
+
+        EMAIL TO SHORTEN:
+        Content: {content}
+elaborate:
+    system: |
+        You are a helpful assistant for an AI bootcamp.
+        You specialize in editing and refining email content.
+        You must strictly follow formatting instructions and output requirements.
+    user: |
+        TASK:
+        You are an expert email editor.
+        Your task is to ELABORATE the email provided below to make it more detailed and easier to understand, approximately 200 words, without losing the original meaning.
+        Preserve:
+        - The original meaning
+        - Key information
+        - Professional tone
+        - Email structure
+
+        IMPORTANT OUTPUT RULES:
+        - The output MUST be in valid JSON format only.
+        - The JSON must contain exactly three fields:
+            1. subject
+            2. sender
+            3. content
+        - Do NOT include explanations, markdown, or extra text outside the JSON.
+
+        EMAIL TO ELABORATE:
+        Content: {content}
+tone:
+    system: |
+        You are a helpful assistant for an AI bootcamp.
+        You specialize in editing and refining email content.
+        You must strictly follow formatting instructions and output requirements.
+    user: |
+        TASK:
+        You are an expert email editor.
+        Your task is to change the tone of the email to be more {tone}.
+        Preserve:
+        - The original meaning
+        - Key information
+        - Email structure
+
+        IMPORTANT OUTPUT RULES:
+        - The output MUST be in valid JSON format only.
+        - The JSON must contain exactly three fields:
+            1. subject
+            2. sender
+            3. content
+        - Do NOT include explanations, markdown, or extra text outside the JSON.
+
+        EMAIL TO CHANGE TONE:
+        Content: {content}
+        Desired Tone: {tone}
+evaluation_template: |
+  Evaluate the following email content based on the instruction provided.
+  Evaluation criteria: {criteria}
+  Original Email Content: {email_content}
+  Intent behind the operation: {motive}
+  After the operation: {result_email_content}
+  Provide a rating on a scale of 1 to 5 based on the following levels: {rating_levels}.
+  Format your response as a JSON object with the following structure:
+  {{
+      "Reason": <reason>,
+      "Rating" : <rating>,
+  }}
+evaluation:
+  faithfulness:
+    motive: "Ensure the revised email maintains the original intent and meaning of the email."
+    criteria: "faithfulness to the original email content"
+    rating_levels: "1: Not faithful at all, 2: Slightly faithful, 3: Moderately faithful, 4: Very faithful, 5: Completely faithful"
+  completeness:
+    motive: "Ensure the revised email addresses all key points and information present in the original email."
+    criteria: "completeness of information compared to the original email"
+    rating_levels: "1: Very incomplete, 2: Somewhat incomplete, 3: Moderately complete, 4: Mostly complete, 5: Fully complete"
+  robustness:
+    motive: "Assess how well the revised email can handle variations in context or unexpected situations while still conveying the intended message."
+    criteria: "robustness to contextual changes"
+    rating_levels: "1: Not robust at all, 2: Slightly robust, 3: Moderately robust, 4: Very robust, 5: Extremely robust"
