@@ -1,0 +1,7 @@
+check,expected,actual,pass
+Total employees,40,30,False
+Level counts,"{1: 1, 2: 3, 3: 9, 4: 27}","{1: np.int64(1), 2: np.int64(8), 3: np.int64(3), 4: np.int64(18)}",False
+CEO has no manager,True,True,True
+Each non-CEO has exactly one manager,True,True,True
+Each manager has exactly 3 reports,True,False,False
+No cycles in hierarchy,False,True,False

@@ -1,0 +1,7 @@
+query,ollama_response,ollama_answer,actual_answer,correct
+What is the mean of column A in this CSV data? Provide only the numerical answer.,0.215,0.215,0.1939,No
+What is the variance of column B in this CSV data? Provide only the numerical answer.,14.876,14.876,0.0440,No
+How many rows have C > 0.8 in this CSV data? Provide only the numerical answer.,24,24,17,No
+"For each row, calculate A + B + C. What is the most common sum? Provide only the numerical answer.",14.95,14.95,1.0000,No
+What is the minimum value in column C? Provide only the numerical answer.,0.08196126412263427,0.08196126412263427,0.0000,No
+What is the maximum value in column A? Provide only the numerical answer.,0.39565915085586884,0.39565915085586884,0.4813,No
