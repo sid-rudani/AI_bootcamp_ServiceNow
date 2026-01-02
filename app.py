@@ -8,8 +8,8 @@ from generate import GenerateEmail
 
 st.set_page_config(page_title="AI Email Editor", page_icon="📧", layout="wide")
 
-def process_email(selected_email, action, **kwargs):
-    response = generator.generate(action, selected_email['content'], **kwargs)
+def process_email(selected_email, content, action, **kwargs):
+    response = generator.generate(action, content, **kwargs)
     try:
         revised_email = json.loads(response)
         revised_content = revised_email["content"]
@@ -72,15 +72,26 @@ st.text_area(
     height=150,
 )
 
+# Excerpt selection
+with st.expander("Use custom Excerpt for Editing"):
+    excerpt = st.text_area(
+        "Selected Excerpt (copy-paste the part you want to edit, or leave blank to edit the entire email)",
+        value="",
+        height=100,
+        key=f"excerpt_{selected_id}",
+    )
+
 optionList = ["Original", "Friendly", "Sympathetic", "Professional"]
 col1, col2, col3 = st.columns(3)
 
+content_to_process = excerpt.strip() if excerpt.strip() else selected_email.get("content", "")
+
 with col1:
-    st.button("Elaborate", on_click=process_email, args=(selected_email, "elaborate"))
+    st.button("Elaborate", on_click=process_email, args=(selected_email, content_to_process, "elaborate"))
 with col2:
-    st.button("Shorten", on_click=process_email, args=(selected_email, "shorten"))
+    st.button("Shorten", on_click=process_email, args=(selected_email, content_to_process, "shorten"))
 with col3:
-    st.selectbox("Change Tone", options=optionList, on_change=lambda: process_email(selected_email, "tone", tone=st.session_state.selected_tone.lower()), key="selected_tone")
+    st.selectbox("Change Tone", options=optionList, on_change=lambda: process_email(selected_email, content_to_process, "tone", tone=st.session_state.selected_tone.lower()), key="selected_tone")
 
 new_email_text = st.text_area(
     "New Email Content",
@@ -110,7 +121,7 @@ completeness_reason = st.session_state.get(f"reason_completeness_{selected_id}",
 robustness_rating = st.session_state.get(f"rating_robustness_{selected_id}", "N/A")
 robustness_reason = st.session_state.get(f"reason_robustness_{selected_id}", "N/A")
 
-col1, col2, col3, col4 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     with st.expander(f"Faithfulness Rating: {faithfulness_rating}"):
@@ -123,6 +134,12 @@ with col2:
 with col3:
     with st.expander(f"Robustness Rating: {robustness_rating}"):
         st.write(f"**Reason:** {robustness_reason}")
+
 with col4:
-    with st.expander(f"Overall Summary: {completeness_rating+faithfulness_rating+robustness_rating}/3"):
-        st.write("**Summary:** It is average of all the ratings obtained above.")
+    try:
+        total = int(faithfulness_rating or 0) + int(completeness_rating or 0) + int(robustness_rating or 0)
+        summary_text = f"Overall Summary: {total}/3"
+    except ValueError:
+        summary_text = "Overall Summary: N/A"
+    with st.expander(summary_text):
+        st.write("**Summary:** Average of all ratings obtained above.")
