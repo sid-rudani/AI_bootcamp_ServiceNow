@@ -1,0 +1,22 @@
+file,metric,value
+short_emails.jsonl,total_lines,100
+short_emails.jsonl,valid_json,100
+short_emails.jsonl,valid_emails,100
+short_emails.jsonl,avg_content_len,88.47
+short_emails.jsonl,avg_subject_len,18.48
+short_emails.jsonl,unique_senders,83
+short_emails.jsonl,model_holes,None detected
+medium_emails.jsonl,total_lines,80
+medium_emails.jsonl,valid_json,80
+medium_emails.jsonl,valid_emails,80
+medium_emails.jsonl,avg_content_len,316.36
+medium_emails.jsonl,avg_subject_len,28.98
+medium_emails.jsonl,unique_senders,70
+medium_emails.jsonl,model_holes,None detected
+long_emails.jsonl,total_lines,31
+long_emails.jsonl,valid_json,31
+long_emails.jsonl,valid_emails,31
+long_emails.jsonl,avg_content_len,1131.26
+long_emails.jsonl,avg_subject_len,34.81
+long_emails.jsonl,unique_senders,30
+long_emails.jsonl,model_holes,Very long content

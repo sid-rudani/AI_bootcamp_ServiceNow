@@ -19,8 +19,9 @@ def process_email(selected_email, content, action, **kwargs):
 
 def updatedEmailList(filename):
     emails_internal = []
+    filepath = os.path.join("datasets", filename)
     try:
-        with open(filename, 'r') as file:
+        with open(filepath, 'r') as file:
             for line in file:
                 emails_internal.append(json.loads(line))
     except Exception:
@@ -36,8 +37,8 @@ datasetNames = {
     "Long Mails": "shorten.jsonl", 
     "Tone Mails" : "tone.jsonl"
     }
-judgeLLM = st.sidebar.selectbox("Select judge model", options=["gpt-4o", "gpt-4o-mini"], key="judge_model")
-baseLLM = st.sidebar.selectbox("Select base LLM model", options=["gpt-4o", "gpt-4o-mini"], key="baseLLM")
+judgeLLM = st.sidebar.selectbox("Select judge model", options=["gpt-4.1", "gpt-4o-mini", "gpt-5.1"], key="judge_model")
+baseLLM = st.sidebar.selectbox("Select base LLM model", options=["gpt-4.1", "gpt-4o-mini"], key="baseLLM")
 
 # Create instance of GenerateEmail with selected baseLLM
 generator = GenerateEmail(baseLLM)
@@ -93,9 +94,11 @@ with col2:
 with col3:
     st.selectbox("Change Tone", options=optionList, on_change=lambda: process_email(selected_email, content_to_process, "tone", tone=st.session_state.selected_tone.lower()), key="selected_tone")
 
+if f"new_email_text_{selected_id}" not in st.session_state:
+    st.session_state[f"new_email_text_{selected_id}"] = ""
+
 new_email_text = st.text_area(
     "New Email Content",
-    value=st.session_state.get(f"new_email_text_{selected_id}", ""),
     height=250,
     key=f"new_email_text_{selected_id}",
 )
@@ -138,7 +141,7 @@ with col3:
 with col4:
     try:
         total = int(faithfulness_rating or 0) + int(completeness_rating or 0) + int(robustness_rating or 0)
-        summary_text = f"Overall Summary: {total}/3"
+        summary_text = f"Overall Summary: {total}/15"
     except ValueError:
         summary_text = "Overall Summary: N/A"
     with st.expander(summary_text):
