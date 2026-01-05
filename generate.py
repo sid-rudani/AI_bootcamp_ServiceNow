@@ -3,6 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import yaml
+import re
 
 load_dotenv()
 
@@ -60,8 +61,17 @@ class GenerateEmail():
                 rating = evaluation.get("Rating", "N/A")
                 reason = evaluation.get("Reason", "N/A")
             except json.JSONDecodeError:
-                reason = extracted_text.strip()
-                rating = "N/A"
+                # Fallback to regex parsing
+                rating_match = re.search(r'"Rating"\s*:\s*(\d+)', extracted_text)
+                reason_match = re.search(r'"Reason"\s*:\s*"([^"]*)"', extracted_text)
+                if rating_match:
+                    rating = rating_match.group(1)
+                else:
+                    rating = "N/A"
+                if reason_match:
+                    reason = reason_match.group(1)
+                else:
+                    reason = extracted_text.strip()
             return rating, reason
         except Exception as e:
             if "RateLimitReached" in str(e):

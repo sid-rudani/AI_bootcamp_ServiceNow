@@ -140,9 +140,13 @@ with col3:
 
 with col4:
     try:
-        total = int(faithfulness_rating or 0) + int(completeness_rating or 0) + int(robustness_rating or 0)
-        summary_text = f"Overall Summary: {total}/15"
-    except ValueError:
-        summary_text = "Overall Summary: N/A"
+        ratings = [str(faithfulness_rating).strip(), str(completeness_rating).strip(), str(robustness_rating).strip()]
+        if all(r.isdigit() for r in ratings):
+            total = sum(int(r) for r in ratings)
+            summary_text = f"Overall Summary: {total}/15"
+        else:
+            summary_text = f"Overall Summary: N/A (incomplete evaluations) - Ratings: {ratings}"
+    except (ValueError, AttributeError):
+        summary_text = f"Overall Summary: N/A - Error with ratings: {ratings}"
     with st.expander(summary_text):
         st.write("**Summary:** Average of all ratings obtained above.")
